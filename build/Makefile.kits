@@ -27,22 +27,17 @@ else
   DATAFILES_R = Linux_RPM.data
   DATAFILES_D = Linux_DPKG.data
 
-  ifneq ($(DISABLE_LISTENER),0)
-    DISABLE_PORT=--DISABLE_PORT=true
-    SCX_PREFIX=scx-cimprov
-  else
-    DISABLE_PORT=
-    SCX_PREFIX=scx
+  DISABLE_PORT=
+  SCX_PREFIX=scx
 
-    # Currently, if we have an active listener, we want OSS bits.
-    # If this ever changes, we'll likely need a setting in configure script.
-    ifneq ($(PF),SunOS)
-      ifeq ($(PF_ARCH),x86)
-        OSS_KITS:=$(shell cd $(SCX_BRD)/../opsmgr-kits; ls *-oss-test.sh *.i686.sh)
-      else
-        ifeq ($(PF_ARCH),x64)
-          OSS_KITS:=$(shell cd $(SCX_BRD)/../opsmgr-kits; ls *-oss-test.sh *.x86_64.sh)
-        endif
+  # Currently, if we have an active listener, we want OSS bits.
+  # If this ever changes, we'll likely need a setting in configure script.
+  ifneq ($(PF),SunOS)
+    ifeq ($(PF_ARCH),x86)
+      OSS_KITS:=$(shell cd $(SCX_BRD)/../opsmgr-kits; ls *-oss-test.sh *.i686.sh)
+    else
+      ifeq ($(PF_ARCH),x64)
+        OSS_KITS:=$(shell cd $(SCX_BRD)/../opsmgr-kits; ls *-oss-test.sh *.x86_64.sh)
       endif
     endif
   endif
@@ -113,7 +108,7 @@ else
 		--PFMINOR=$(PF_MINOR) \
 		--VERSION=$(SCX_BUILDVERSION_MAJOR).$(SCX_BUILDVERSION_MINOR).$(SCX_BUILDVERSION_PATCH) \
 		--RELEASE=$(SCX_BUILDVERSION_BUILDNR) \
-		--ULINUX_POSTFIX=/openssl_0.9.8 $(DISABLE_PORT) \
+		--ULINUX_POSTFIX=/openssl_0.9.8 \
 		--DATAFILE_PATH=$(SCX_BRD)/installer/datafiles \
 		$(OUTPUT_PACKAGE_SPECIFICATION) \
 		$(DATAFILES) $(DATAFILES_R)
@@ -131,7 +126,7 @@ else
 		--PFMINOR=$(PF_MINOR) \
 		--VERSION=$(SCX_BUILDVERSION_MAJOR).$(SCX_BUILDVERSION_MINOR).$(SCX_BUILDVERSION_PATCH) \
 		--RELEASE=$(SCX_BUILDVERSION_BUILDNR) \
-		--ULINUX_POSTFIX=/openssl_1.0.0 $(DISABLE_PORT) \
+		--ULINUX_POSTFIX=/openssl_1.0.0 \
 		--DATAFILE_PATH=$(SCX_BRD)/installer/datafiles \
 		$(OUTPUT_PACKAGE_SPECIFICATION) \
 		$(DATAFILES) $(DATAFILES_R)
@@ -152,7 +147,7 @@ ifeq ($(PF_ARCH),x64)
 		--PFMINOR=$(PF_MINOR) \
 		--VERSION=$(SCX_BUILDVERSION_MAJOR).$(SCX_BUILDVERSION_MINOR).$(SCX_BUILDVERSION_PATCH) \
 		--RELEASE=$(SCX_BUILDVERSION_BUILDNR) \
-		--ULINUX_POSTFIX=/openssl_1.1.0 $(DISABLE_PORT) \
+		--ULINUX_POSTFIX=/openssl_1.1.0 \
 		--DATAFILE_PATH=$(SCX_BRD)/installer/datafiles \
 		$(OUTPUT_PACKAGE_SPECIFICATION) \
 		$(DATAFILES) $(DATAFILES_R)
@@ -174,7 +169,7 @@ endif
 		--PFMINOR=$(PF_MINOR) \
 		--VERSION=$(SCX_BUILDVERSION_MAJOR).$(SCX_BUILDVERSION_MINOR).$(SCX_BUILDVERSION_PATCH) \
 		--RELEASE=$(SCX_BUILDVERSION_BUILDNR) \
-		--ULINUX_POSTFIX=/openssl_0.9.8 $(DISABLE_PORT) \
+		--ULINUX_POSTFIX=/openssl_0.9.8 \
 		$(DPKG_LOCATION) \
 		--DATAFILE_PATH=$(SCX_BRD)/installer/datafiles \
 		$(OUTPUT_PACKAGE_SPECIFICATION) \
@@ -193,7 +188,7 @@ endif
 		--PFMINOR=$(PF_MINOR) \
 		--VERSION=$(SCX_BUILDVERSION_MAJOR).$(SCX_BUILDVERSION_MINOR).$(SCX_BUILDVERSION_PATCH) \
 		--RELEASE=$(SCX_BUILDVERSION_BUILDNR) \
-		--ULINUX_POSTFIX=/openssl_1.0.0 $(DISABLE_PORT) \
+		--ULINUX_POSTFIX=/openssl_1.0.0 \
 		$(DPKG_LOCATION) \
 		--DATAFILE_PATH=$(SCX_BRD)/installer/datafiles \
 		$(OUTPUT_PACKAGE_SPECIFICATION) \
@@ -213,7 +208,7 @@ ifeq ($(PF_ARCH),x64)
 		--PFMINOR=$(PF_MINOR) \
 		--VERSION=$(SCX_BUILDVERSION_MAJOR).$(SCX_BUILDVERSION_MINOR).$(SCX_BUILDVERSION_PATCH) \
 		--RELEASE=$(SCX_BUILDVERSION_BUILDNR) \
-		--ULINUX_POSTFIX=/openssl_1.1.0 $(DISABLE_PORT) \
+		--ULINUX_POSTFIX=/openssl_1.1.0 \
 		$(DPKG_LOCATION) \
 		--DATAFILE_PATH=$(SCX_BRD)/installer/datafiles \
 		$(OUTPUT_PACKAGE_SPECIFICATION) \
@@ -317,7 +312,7 @@ else # ifneq ($(COMBINED_PACKAGES),1)
         else
 	   cd $(INTERMEDIATE_DIR); tar cvf $(OUTPUT_PACKAGE_PREFIX).tar 098/*.{rpm,deb} 100/*.{rpm,deb} $(OSS_KITS)
         endif
-	../installer/bundle/create_bundle.sh $(DISTRO_TYPE) $(INTERMEDIATE_DIR) $(OUTPUT_PACKAGE_PREFIX).tar $(OUTPUT_PACKAGE_PREFIX) `cat $(INTERMEDIATE_DIR)/100/omi_package_filename` $(DISABLE_LISTENER)
+	../installer/bundle/create_bundle.sh $(DISTRO_TYPE) $(INTERMEDIATE_DIR) $(OUTPUT_PACKAGE_PREFIX).tar $(OUTPUT_PACKAGE_PREFIX) `cat $(INTERMEDIATE_DIR)/100/omi_package_filename` 0
 	cp $(INTERMEDIATE_DIR)/$(OUTPUT_PACKAGE_PREFIX).sh $(TARGET_DIR)
 
 endif # ifneq ($(COMBINED_PACKAGES),1)

@@ -63,7 +63,6 @@ fi
 /opt/microsoft/scx/bin/tools/GetLinuxOS.sh
 
 %Postuninstall_50
-#if DISABLE_PORT != true
     # If we're called for upgrade, don't do anything
     if ${{PERFORMING_UPGRADE_NOT}}; then
         # Check if port 1270 is open
@@ -75,7 +74,6 @@ fi
             mv ${{OMI_CONF_FILE}}_temp ${{OMI_CONF_FILE}}
         fi
     fi
-#endif
 
 %Postuninstall_1100
 #include DeleteSoftLinks

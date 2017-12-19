@@ -3,7 +3,6 @@
 scxpal_dir="../../pal"
 scxomi_dir=`(cd ../../omi/Unix; pwd -P)`
 build_type="Release"
-disable_listener=0
 enable_debug=""
 enable_purify_agent=""
 enable_purify_server=""
@@ -44,10 +43,6 @@ do
 
     -h | --help)
       help=1
-      ;;
-
-    --disable-listener)
-      disable_listener=1
       ;;
 
     --enable-bullseye)
